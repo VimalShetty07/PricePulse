@@ -1,9 +1,16 @@
-from django.shortcuts import render
 from django.http import HttpResponse
+from rest_framework.views import APIView
+from .serializers import UserSerilizer
+from rest_framework.response import Response
 
-# Create your views here.
-def register(request):
-    return HttpResponse("Hello world!")
+
+# view for registering users
+class register(APIView):
+    def post(self, request):
+        serializer = UserSerilizer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 def login(request):
